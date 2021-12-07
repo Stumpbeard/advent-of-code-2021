@@ -7,8 +7,11 @@ fn main() {
         .split("\n")
         .collect::<Vec<&str>>();
 
+    let reading_length = lines[0].len();
+
     println!("{}", part_one(&lines));
     // println!("{}", part_two(lines));
+    part_two(lines, reading_length);
 }
 
 fn part_one(instructions: &Vec<&str>) -> i64 {
@@ -40,23 +43,17 @@ fn part_one(instructions: &Vec<&str>) -> i64 {
     gamma_num * beta_num
 }
 
-fn part_two(instructions: Vec<Vec<&str>>) -> i32 {
-    let mut forward = 0;
-    let mut aim = 0;
-    let mut depth = 0;
-    for line in instructions {
-        let num: i32 = line[1].parse().unwrap();
-        let direction = line[0];
-        match direction {
-            "forward" => {
-                forward += num;
-                depth += aim * num
+fn part_two(readings: Vec<&str>, length: usize) {
+    let mut filtered_list = readings.clone();
+    for i in 0..length {
+        let mut bit_count = 0;
+        for c in filtered_list[i].chars() {
+            match c {
+                '0' => bit_count -= 1,
+                _ => bit_count += 1,
             }
-            "down" => aim += num,
-            "up" => aim -= num,
-            _ => println!("not a direction"),
         }
-    }
 
-    forward * depth
+        println!("{}", bit_count);
+    }
 }
